@@ -11,6 +11,8 @@ import FinishScreen from "./FinishScreen";
 import Footer from "./Footer";
 import Timer from "./Timer";
 
+import rawQuestions from "../data/questions.json";
+
 const SECS_PER_QUESTION = 30;
 
 const initialState = {
@@ -98,11 +100,12 @@ export default function App() {
     0
   );
 
-  useEffect(function () {
-    fetch("http://localhost:9000/questions")
-      .then((res) => res.json())
-      .then((data) => dispatch({ type: "dataRecieved", payload: data }))
-      .catch((err) => dispatch({ type: "dataFailed" }));
+  useEffect(() => {
+    try {
+      dispatch({ type: "dataRecieved", payload: rawQuestions.questions });
+    } catch (err) {
+      dispatch({ type: "dataFailed" });
+    }
   }, []);
 
   return (
